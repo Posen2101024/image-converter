@@ -29,13 +29,13 @@ def convertImages(images, save_dir, suffix):
 
 		try:
 
-			Image.open(image).save(output)
+			Image.open(image).convert("L").save(output)
 
 			print(colored("{} --> {}".format(image, output), "green"))
 
-		except:
+		except Exception as e:
 
-			print(colored("{} --> {}".format(image, output), "red"))
+			print(colored(e, "red"))
 
 def main(args):
 

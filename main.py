@@ -1,7 +1,7 @@
 
 from PIL import Image
 
-from termcolor import colored
+from pylibjpeg import decode
 
 from os import walk
 
@@ -13,7 +13,29 @@ def listImages(root_dir):
 
 	return ["{}/{}".format(path, file) for path, _, files in walk(root_dir) for file in files]
 
+class DecodeImage():
+
+	def __new__(cls, image):
+
+		for func in [cls.jpeg, cls.general]:
+			try:
+				return func(image)
+			except:
+				continue
+
+	def jpeg(image):
+
+		with open(image, "rb") as f:
+
+			return Image.fromarray(decode(f))
+
+	def general(image):
+
+		return Image.open(image)
+
 def convertImages(images, save_dir, suffix):
+
+	length = max(len(image) for image in images)
 
 	for image in images:
 
@@ -29,13 +51,13 @@ def convertImages(images, save_dir, suffix):
 
 		try:
 
-			Image.open(image).convert("L").save(output)
+			DecodeImage(image).save(output)
 
-			print(colored("{} --> {}".format(image, output), "green"))
+			print(" {:>{}} --> {}".format(image, length, output))
 
-		except Exception as e:
+		except:
 
-			print(colored(e, "red"))
+			print(" {:>{}} failed!".format(image, length))
 
 def main(args):
 

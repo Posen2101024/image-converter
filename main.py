@@ -53,11 +53,11 @@ def convertImages(images, save_dir, suffix):
 
 			DecodeImage(image).save(output)
 
-			print(" {:>{}} --> {}".format(image, length, output))
+			print(" {:<{}} --> {}".format(image, length, output))
 
 		except:
 
-			print(" {:>{}} failed!".format(image, length))
+			print(" {:<{}}     failed!".format(image, length))
 
 def main(args):
 
